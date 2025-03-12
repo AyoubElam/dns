@@ -1,0 +1,35 @@
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp-server/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+
+option domain-name "est.intra";
+option domain-name-servers 192.168.1.1;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style interim;
+ddns-domainname "est.intra.";
+ddns-rev-domainname "1.168.192.in-addr.arpa.";
+ddns-updates on;
+ignore client-updates;
+update-static-leases on;
+authoritative;
+
+# Forward zone
+zone est.intra. {
+    primary 192.168.1.1;
+}
+
+# Reverse zone 
+zone 1.168.192.in-addr.arpa. {
+    primary 192.168.1.1;
+}
+
+# LAN 1
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.10 192.168.1.50;
+  option routers 192.168.1.1;
+  option broadcast-address 192.168.1.255;
+}
